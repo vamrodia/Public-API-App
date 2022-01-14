@@ -1,4 +1,4 @@
-# Details for this Project - app
+# Details for this Project - app - Public Version
 
 ## Description
 
