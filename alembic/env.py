@@ -11,16 +11,18 @@ import os
 # access to the values within the .ini file in use.
 config = context.config
 
-mysql_user = os.environ.get("MYSQL_USER")
-mysql_pass = os.environ.get("MYSQL_PASS")
+# mysql_user = os.environ.get("MYSQL_USER")
+# mysql_pass = os.environ.get("MYSQL_PASS")
+pgsql_user = os.environ.get("PGSQL_USER")
+pgsql_pass = os.environ.get("PGSQL_PASS")
 
 # mysql_url = f"mysql://{mysql_user}:%s@localhost:3306/fastapi" % quote(mysql_pass)
-mysql_url = f"mysql://{mysql_user}:%s@localhost:3306/fastapi" % quote(mysql_pass)
+pgsql_url = f"postgresql+psycopg2://{pgsql_user}:%s@localhost:5432/fastapi" % quote(pgsql_pass)
 
 # In Alembic "%" creates an issue and hence has to be escaped:
 # https://stackoverflow.com/questions/39849641/in-flask-migrate-valueerror-
 # invalid-interpolation-syntax-in-connection-string-a
-db_url_escaped = mysql_url.replace('%', '%%')
+db_url_escaped = pgsql_url.replace('%', '%%')
 
 
 config.set_main_option("sqlalchemy.url", db_url_escaped)
@@ -28,6 +30,7 @@ config.set_main_option("sqlalchemy.url", db_url_escaped)
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
+
 
 # add your model's MetaData object here
 # for 'autogenerate' support

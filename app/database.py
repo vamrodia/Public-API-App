@@ -22,12 +22,14 @@ def get_db():
 
 
 # Environment Variables for the MySQL Database
-mysql_user = os.environ.get("MYSQL_USER")
-mysql_pass = os.environ.get("MYSQL_PASS")
+# mysql_user = os.environ.get("MYSQL_USER")
+# mysql_pass = os.environ.get("MYSQL_PASS")
+pgsql_user = os.environ.get("PGSQL_USER")
+pgsql_pass = os.environ.get("PGSQL_PASS")
 
 # Defining the MySQL URL and connecting the the Database
-mysql_url = f"mysql://{mysql_user}:%s@localhost:3306/{DATABASE_NAME}" % quote(mysql_pass)
-engine = create_engine(mysql_url)
+pgsql_url = f"postgresql+psycopg2://{pgsql_user}:%s@localhost:5432/{DATABASE_NAME}" % quote(pgsql_pass)
+engine = create_engine(pgsql_url)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
