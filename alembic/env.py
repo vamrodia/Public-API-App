@@ -5,7 +5,8 @@ from sqlalchemy import pool
 from urllib.parse import quote
 from alembic import context
 from app.models import Base
-import os
+# import os
+from app.config import settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -13,11 +14,12 @@ config = context.config
 
 # mysql_user = os.environ.get("MYSQL_USER")
 # mysql_pass = os.environ.get("MYSQL_PASS")
-pgsql_user = os.environ.get("PGSQL_USER")
-pgsql_pass = os.environ.get("PGSQL_PASS")
+# pgsql_user = os.environ.get("PGSQL_USER")
+# pgsql_pass = os.environ.get("PGSQL_PASS")
 
 # mysql_url = f"mysql://{mysql_user}:%s@localhost:3306/fastapi" % quote(mysql_pass)
-pgsql_url = f"postgresql+psycopg2://{pgsql_user}:%s@localhost:5432/fastapi" % quote(pgsql_pass)
+pgsql_url = f"postgresql+psycopg2://{settings.database_username}:%s@{settings.database_hostname}" \
+            f":{settings.database_port}/{settings.database_name}" % quote(settings.database_password)
 
 # In Alembic "%" creates an issue and hence has to be escaped:
 # https://stackoverflow.com/questions/39849641/in-flask-migrate-valueerror-

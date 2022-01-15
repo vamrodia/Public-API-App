@@ -4,12 +4,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from urllib.parse import quote
 import os
+from .config import settings
 # import mysql.connector
 # from mysql.connector import Error
 # from time import sleep
-
-# Defining the Database Name CONSTANT
-DATABASE_NAME = "fastapi"
 
 
 # Dependency for the SQL Alchemy
@@ -24,11 +22,17 @@ def get_db():
 # Environment Variables for the MySQL Database
 # mysql_user = os.environ.get("MYSQL_USER")
 # mysql_pass = os.environ.get("MYSQL_PASS")
-pgsql_user = os.environ.get("PGSQL_USER")
-pgsql_pass = os.environ.get("PGSQL_PASS")
+# pgsql_user = os.environ.get("PGSQL_USER")
+# pgsql_pass = os.environ.get("PGSQL_PASS")
+
+# From ENV File
+# pgsql_user = settings.database_username
+# pgsql_pass = settings.database_password
 
 # Defining the MySQL URL and connecting the the Database
-pgsql_url = f"postgresql+psycopg2://{pgsql_user}:%s@localhost:5432/{DATABASE_NAME}" % quote(pgsql_pass)
+pgsql_url = f"postgresql+psycopg2://{settings.database_username}" \
+            f":%s@{settings.database_hostname}:{settings.database_port}" \
+            f"/{settings.database_name}" % quote(settings.database_password)
 engine = create_engine(pgsql_url)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()

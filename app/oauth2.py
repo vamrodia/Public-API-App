@@ -5,15 +5,17 @@ from . import schemas, database, models
 from fastapi import Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-import os
+from .config import settings
+# import os
 
 # Component needed for the OAuth2 functionality with the API Path "login"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
 
 # Setting up the CONSTANTS declaration
-SECRET_KEY = os.environ.get("API_APP_SECRET_KEY")
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+# SECRET_KEY = os.environ.get("API_APP_SECRET_KEY")
+SECRET_KEY = settings.secret_key
+ALGORITHM = settings.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 
 
 # Function to create an Access Token
@@ -56,8 +58,3 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
     return fetched_user
     # return verify_access_token(token, credential_exception)
-
-
-
-
-
