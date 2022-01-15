@@ -53,6 +53,7 @@ This includes some functions as well for some complementary functionality.
 - fetch('http://localhost:8000/').then(res=>res.json()).then(console.log) $ Running API Calls from Browser
 - Setting Environment Variable using '.env' file Ubuntu: ```set -o allexport; source ~/.env; set +o allexport```
 - Certbot: https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
+- UFW: https://www.digitalocean.com/community/tutorials/ufw-essentials-common-firewall-rules-and-commands#:~:text=To%20allow%20all%20network%20connections,113.101
 
 
 ## Reference URLs
