@@ -65,4 +65,4 @@ app.include_router(votes.router)
 # Creating the GET Requests to fetch the Root Path
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Welcome to this Basic API Application created by Vibhor Amrodia"}
