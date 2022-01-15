@@ -40,3 +40,17 @@ def client(session):
             session.close()
     app.dependency_overrides[get_db] = override_get_db
     yield TestClient(app)
+
+
+# Creating a Test user using a Fixture to be referenced by other tests
+@pytest.fixture()
+def test_user(client):
+    user_data = {"email": "testvibhor@user.com",
+                 "password": "testpass"}
+    res = client.post("/users/create", json=user_data)
+
+    assert res.status_code == 201
+    # print(res.json())
+    new_user = res.json()
+    new_user['password'] = user_data['password']
+    return new_user
