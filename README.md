@@ -20,19 +20,15 @@ We have User Operations also available for scalability
 
 Under the folder scope for the application, run the following CLI: ```uvicorn app.main:app --reload```
 
+We can use gunicorn for running the application as well ```gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000```
+
 ## Requirements
 
-1. pip install SQLAlchemy # SQL Alchemy
-2. pip install "fastapi[all]" # Fast API
-3. pip install "python-jose[cryptography]" # Python Jose and other Cryptography
-4. pip install "passlib[bcrypt]" # PassLib
-5. pip3 install mysql-connector-python # MySQL Connector
-6. pip3 install urllib3 # URL Lib
-7. pip3 install alembic # Alembic DB Migration https://alembic.sqlalchemy.org/en/latest/
-
-All the required modules/package are listed under the "requirements.txt" file and can be installed on your target machine as:
+All the required modules/package are listed under the "requirements.txt" file:
 
 ```pip freeze > requirements.txt```
+
+ and can be installed on your target machine as:
 
 ```pip install -r requirements.txt```
 
