@@ -2,6 +2,8 @@ name: Build and Deploy Code
 on: [push, pull_request]
 jobs:
   job1:
+    env:
+      DA
     runs-on: ubuntu-latest
     steps:
       - name: Pulling git Repo
