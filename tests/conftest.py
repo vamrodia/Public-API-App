@@ -7,6 +7,8 @@ from app.main import app
 from app.config import settings
 from urllib.parse import quote
 from app.database import get_db, Base
+from app.oauth2 import create_access_token
+from app import models
 import pytest
 
 # Defining the MySQL URL and connecting the the Database
@@ -44,6 +46,20 @@ def client(session):
 
 # Creating a Test user using a Fixture to be referenced by other tests
 @pytest.fixture()
+def test_user2(client):
+    user_data = {"email": "testvibhor2@user.com",
+                 "password": "testpass"}
+    res = client.post("/users/create", json=user_data)
+
+    assert res.status_code == 201
+    # print(res.json())
+    new_user = res.json()
+    new_user['password'] = user_data['password']
+    return new_user
+
+
+# Creating a Test user using a Fixture to be referenced by other tests
+@pytest.fixture()
 def test_user(client):
     user_data = {"email": "testvibhor@user.com",
                  "password": "testpass"}
@@ -54,3 +70,53 @@ def test_user(client):
     new_user = res.json()
     new_user['password'] = user_data['password']
     return new_user
+
+
+# Creating a Token to be used as a Fixture and will be referenced by other tests
+@pytest.fixture()
+def token(test_user):
+    return create_access_token({"user_id": test_user['id']})
+
+
+# Creating an authorized user to be used as a Fixture and will be referenced by other tests
+@pytest.fixture()
+def authorized_client(client, token):
+    client.headers = {
+        **client.headers,
+        "Authorization": f"Bearer {token}"
+    }
+    return client
+
+
+# Creating test posts to be used as a Fixture and will be referenced by other tests
+@pytest.fixture()
+def test_posts(test_user, session, test_user2):
+    posts_data = [{
+        "title": "First Title",
+        "content": "First Content",
+        "owner_id": test_user['id']
+    }, {
+        "title": "Second Title",
+        "content": "Second Content",
+        "owner_id": test_user['id']
+    }, {
+        "title": "Third Title",
+        "content": "Third Content",
+        "owner_id": test_user['id']
+    }, {
+        "title": "Third Title",
+        "content": "Third Content",
+        "owner_id": test_user2['id']
+    }]
+
+    def create_post_model(post):
+        return models.Post(**post)
+
+    post_map = map(create_post_model, posts_data)
+    posts = list(post_map)
+
+    session.add_all(posts)
+    session.commit()
+
+    posts = session.query(models.Post).all()
+    return posts
